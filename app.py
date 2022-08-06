@@ -125,7 +125,7 @@ with demo:
     gr.Markdown(title)
     gr.Markdown(description)
     gr.Markdown(twitter_link)
-    options = gr.Dropdown(choices=models,label='Object Detection Model',show_label=True)
+    options = gr.Dropdown(choices=models,label='Object Detection Model',value=models[0],show_label=True)
     slider_input = gr.Slider(minimum=0.2,maximum=1,value=0.5,step=0.1,label='Prediction Threshold')
     
     with gr.Tabs():
