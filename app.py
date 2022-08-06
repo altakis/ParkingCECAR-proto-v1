@@ -95,7 +95,7 @@ def set_example_url(example: list) -> dict:
     return gr.Textbox.update(value=example[0]), gr.Image.update(value=get_original_image(example[0]))
 
 
-title = """<h1 id="title">Face Mask Detection with YOLOS</h1>"""
+title = """<h1 id="title">License Plate Detection with YOLOS</h1>"""
 
 description = """
 YOLOS is a Vision Transformer (ViT) trained using the DETR loss. Despite its simplicity, a base-sized YOLOS model is able to achieve 42 AP on COCO validation 2017 (similar to DETR and more complex frameworks such as Faster R-CNN).
@@ -168,7 +168,7 @@ with demo:
     example_url.click(fn=set_example_url,inputs=[example_url],outputs=[url_input,original_image])
     
 
-    gr.Markdown("![visitor badge](https://visitor-badge.glitch.me/badge?page_id=nickmuchi-face-mask-detections-with-yolos)")
+    gr.Markdown("![visitor badge](https://visitor-badge.glitch.me/badge?page_id=nickmuchi-license-plate-detection-with-yolos)")
 
     
 demo.launch(debug=True,enable_queue=True)
