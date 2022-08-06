@@ -124,8 +124,8 @@ with demo:
     gr.Markdown(title)
     gr.Markdown(description)
     gr.Markdown(twitter_link)
-    options = gr.Dropdown(choices=models,label='Object Detection Model',show_label=True,value=models[0])
-    slider_input = gr.Slider(minimum=0.2,maximum=1,value=0.3,step=0.1,label='Prediction Threshold')
+    options = gr.Dropdown(choices=models,label='Object Detection Model',show_label=True)
+    slider_input = gr.Slider(minimum=0.2,maximum=1,value=0.5,step=0.1,label='Prediction Threshold')
     
     with gr.Tabs():
         with gr.TabItem('Image URL'):
@@ -143,7 +143,7 @@ with demo:
      
         with gr.TabItem('Image Upload'):
             with gr.Row():
-                img_input = gr.Image(type='pil')
+                img_input = gr.Image(type='pil',shape=(750,750))
                 img_output_from_upload= gr.Image(shape=(750,750))
                 
             with gr.Row(): 
@@ -157,7 +157,6 @@ with demo:
             with gr.Row():
                 web_input = gr.Image(source='webcam',type='pil',shape=(750,750),streaming=True)
                 img_output_from_webcam= gr.Image(shape=(750,750))
-                #gr.Image(source="webcam",type='pil',shape=(750,750)).stream(detect_objects, inputs=[options,url_input,img_input,slider_input], outputs =[img_output_from_webcam])
 
             cam_but = gr.Button('Detect')
             
