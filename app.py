@@ -52,8 +52,8 @@ def visualize_prediction(img, output_dict, threshold=0.5, id2label=None):
     ax = plt.gca()
     colors = COLORS * 100
     for score, (xmin, ymin, xmax, ymax), label, color in zip(scores, boxes, labels, colors):
-        ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin, fill=False, color=color, linewidth=3))
-        ax.text(xmin, ymin, f"{label}: {score:0.2f}", fontsize=15, bbox=dict(facecolor="yellow", alpha=0.5))
+        ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin, fill=False, color=color, linewidth=5))
+        ax.text(xmin, ymin, f"{label}: {score:0.2f}", fontsize=18, bbox=dict(facecolor="yellow", alpha=0.5))
     plt.axis("off")
     return fig2img(plt.gcf())
     
@@ -143,7 +143,7 @@ with demo:
      
         with gr.TabItem('Image Upload'):
             with gr.Row():
-                img_input = gr.Image(type='pil',shape=(750,750))
+                img_input = gr.Image(type='pil')
                 img_output_from_upload= gr.Image(shape=(750,750))
                 
             with gr.Row(): 
