@@ -1,6 +1,6 @@
 ---
-title: License Plate Detection
-emoji: 🦀
+title: License Plate Detection with YOLOS
+emoji: 🚗
 colorFrom: green
 colorTo: gray
 sdk: gradio
