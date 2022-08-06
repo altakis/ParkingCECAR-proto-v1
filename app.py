@@ -8,6 +8,8 @@ from PIL import Image
 from transformers import AutoFeatureExtractor, YolosForObjectDetection
 import os
 
+transformers.utils.move_cache()
+
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 # colors for visualization
