@@ -54,7 +54,7 @@ def visualize_prediction(img, output_dict, threshold=0.5, id2label=None):
     colors = COLORS * 100
     for score, (xmin, ymin, xmax, ymax), label, color in zip(scores, boxes, labels, colors):
         ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin, fill=False, color=color, linewidth=10))
-        ax.text(xmin, ymin, f"{label}: {score:0.2f}", fontsize=55, bbox=dict(facecolor="red", alpha=0.8))
+        ax.text(xmin, ymin, f"{label}: {score:0.2f}", fontsize=60, bbox=dict(facecolor="yellow", alpha=0.8))
     plt.axis("off")
     return fig2img(plt.gcf())
     
