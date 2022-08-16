@@ -45,7 +45,7 @@ def visualize_prediction(img, output_dict, threshold=0.5, id2label=None):
     boxes = output_dict["boxes"][keep].tolist()
     scores = output_dict["scores"][keep].tolist()
     labels = output_dict["labels"][keep].tolist()
-    print(labels)
+    
     if id2label is not None:
         
         labels = [id2label[x] for x in labels]
@@ -56,8 +56,9 @@ def visualize_prediction(img, output_dict, threshold=0.5, id2label=None):
     ax = plt.gca()
     colors = COLORS * 100
     for score, (xmin, ymin, xmax, ymax), label, color in zip(scores, boxes, labels, colors):
-        ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin, fill=False, color=color, linewidth=10))
-        ax.text(xmin, ymin, f"{label}: {score:0.2f}", fontsize=60, bbox=dict(facecolor="yellow", alpha=0.8))
+        if label == 'license-plates':
+            ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin, fill=False, color=color, linewidth=10))
+            ax.text(xmin, ymin, f"{label}: {score:0.2f}", fontsize=60, bbox=dict(facecolor="yellow", alpha=0.8))
     plt.axis("off")
     return fig2img(plt.gcf())
     
