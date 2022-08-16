@@ -46,7 +46,7 @@ def visualize_prediction(img, output_dict, threshold=0.5, id2label=None):
     scores = output_dict["scores"][keep].tolist()
     labels = output_dict["labels"][keep].tolist()
     if id2label is not None:
-        labels = [id2label[x] for x in labels]
+        labels = [id2label[x] for x in labels if x == "Rego_Plates"]
 
     plt.figure(figsize=(50, 50))
     plt.imshow(img)
