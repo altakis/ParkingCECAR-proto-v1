@@ -138,6 +138,7 @@ with demo:
                 with gr.Column():
                     url_input = gr.Textbox(lines=2,label='Enter valid image URL here..')
                     original_image = gr.Image(shape=(750,750))
+                    url_input.change(get_original_image, url_input, original_image)
                 with gr.Column():
                     img_output_from_url = gr.Image(shape=(750,750))
                 
