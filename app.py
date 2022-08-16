@@ -45,8 +45,9 @@ def visualize_prediction(img, output_dict, threshold=0.5, id2label=None):
     boxes = output_dict["boxes"][keep].tolist()
     scores = output_dict["scores"][keep].tolist()
     labels = output_dict["labels"][keep].tolist()
+    print(labels)
     if id2label is not None:
-        print(labels)
+        
         labels = [id2label[x] for x in labels]
         
 
