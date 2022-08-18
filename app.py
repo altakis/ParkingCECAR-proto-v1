@@ -113,6 +113,7 @@ Links to HuggingFace Models:
 
 models = ["nickmuchi/yolos-small-rego-plates-detection","nickmuchi/yolos-small-license-plate-detection"]
 urls = ["https://drive.google.com/uc?id=1j9VZQ4NDS4gsubFf3m2qQoTMWLk552bQ","https://drive.google.com/uc?id=1p9wJIqRz3W50e2f_A0D8ftla8hoXz4T5"]
+images = [[path.as_posix()] for path in sorted(pathlib.Path('images').rglob('*.j*g'))]
 
 twitter_link = """
 [![](https://img.shields.io/twitter/follow/nickmuchi?label=@nickmuchi&style=social)](https://twitter.com/nickmuchi)
@@ -143,7 +144,8 @@ with demo:
                     img_output_from_url = gr.Image(shape=(750,750))
                 
             with gr.Row():
-                example_url = gr.Dataset(components=[url_input],samples=[[str(url)] for url in urls])
+                example_url = gr.Examples(examples=urls,inputs=[url_input])
+                
             
             url_but = gr.Button('Detect')
      
@@ -153,8 +155,7 @@ with demo:
                 img_output_from_upload= gr.Image(shape=(750,750))
                 
             with gr.Row(): 
-                example_images = gr.Dataset(components=[img_input],
-                                            samples=[[path.as_posix()] for path in sorted(pathlib.Path('images').rglob('*.j*g'))])
+                example_images = gr.Examples(examples=images,inputs=[img_input])                            
                                                    
                 
             img_but = gr.Button('Detect')
@@ -169,9 +170,6 @@ with demo:
     url_but.click(detect_objects,inputs=[options,url_input,img_input,web_input,slider_input],outputs=[img_output_from_url],queue=True)
     img_but.click(detect_objects,inputs=[options,url_input,img_input,web_input,slider_input],outputs=[img_output_from_upload],queue=True)
     cam_but.click(detect_objects,inputs=[options,url_input,img_input,web_input,slider_input],outputs=[img_output_from_webcam],queue=True)
-    example_images.click(fn=set_example_image,inputs=[example_images],outputs=[img_input])
-    example_url.click(fn=set_example_url,inputs=[example_url],outputs=[url_input,original_image])
-    
 
     gr.Markdown("![visitor badge](https://visitor-badge.glitch.me/badge?page_id=nickmuchi-license-plate-detection-with-yolos)")
 
