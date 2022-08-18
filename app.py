@@ -111,7 +111,7 @@ Links to HuggingFace Models:
 - [hustlv/yolos-small](https://huggingface.co/hustlv/yolos-small)  
 """
 
-models = ["nickmuchi/yolos-small-rego-plates-detection","nickmuchi/yolos-small-license-plate-detection"]
+models = ["nickmuchi/yolos-small-rego-plates-detection","nickmuchi/yolos-small-license-plate-detection","nickmuchi/yolos-small-finetuned-license-plate-detection"]
 urls = ["https://drive.google.com/uc?id=1j9VZQ4NDS4gsubFf3m2qQoTMWLk552bQ","https://drive.google.com/uc?id=1p9wJIqRz3W50e2f_A0D8ftla8hoXz4T5"]
 images = [[path.as_posix()] for path in sorted(pathlib.Path('images').rglob('*.j*g'))]
 
