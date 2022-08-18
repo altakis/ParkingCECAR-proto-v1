@@ -73,8 +73,10 @@ def detect_objects(model_name,url_input,image_input,webcam_input,threshold):
     #Extract model and feature extractor
     feature_extractor = AutoFeatureExtractor.from_pretrained(model_name)
     
-    model = YolosForObjectDetection.from_pretrained(model_name)
-    
+    if "yolos" in model_name:
+        model = YolosForObjectDetection.from_pretrained(model_name)
+    elif "detr" in model_name:
+        model = DetrForObjectDetection.from_pretrained(model_name)
     
     if validators.url(url_input):
         image = get_original_image(url_input)
@@ -111,7 +113,8 @@ Links to HuggingFace Models:
 - [hustlv/yolos-small](https://huggingface.co/hustlv/yolos-small)  
 """
 
-models = ["nickmuchi/yolos-small-rego-plates-detection","nickmuchi/yolos-small-license-plate-detection","nickmuchi/yolos-small-finetuned-license-plate-detection"]
+models = ["nickmuchi/yolos-small-rego-plates-detection","nickmuchi/yolos-small-license-plate-detection","nickmuchi/yolos-small-finetuned-license-plate-detection",\
+"nickmuchi/detr-resnet50-finetuned-license-plate-detection"]
 urls = ["https://drive.google.com/uc?id=1j9VZQ4NDS4gsubFf3m2qQoTMWLk552bQ","https://drive.google.com/uc?id=1p9wJIqRz3W50e2f_A0D8ftla8hoXz4T5"]
 images = [[path.as_posix()] for path in sorted(pathlib.Path('images').rglob('*.j*g'))]
 
