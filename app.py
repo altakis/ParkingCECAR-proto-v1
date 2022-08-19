@@ -5,7 +5,7 @@ import requests, validators
 import torch
 import pathlib
 from PIL import Image
-from transformers import AutoFeatureExtractor, YolosForObjectDetection
+from transformers import AutoFeatureExtractor, YolosForObjectDetection, DetrForObjectDetection
 import os
 
 
