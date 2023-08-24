@@ -9,7 +9,7 @@ from transformers import AutoFeatureExtractor, YolosForObjectDetection, DetrForO
 import os
 
 
-os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
+#os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 # colors for visualization
 COLORS = [
@@ -113,7 +113,7 @@ Links to HuggingFace Models:
 - [hustlv/yolos-small](https://huggingface.co/hustlv/yolos-small)  
 """
 
-models = ["nickmuchi/yolos-small-finetuned-license-plate-detection","nickmuchi/detr-resnet50-license-plate-detection"]
+models = ["nickmuchi/yolos-small-finetuned-license-plate-detection","nickmuchi/detr-resnet50-license-plate-detection", "nickmuchi/yolos-small-rego-plates-detection"]
 urls = ["https://drive.google.com/uc?id=1j9VZQ4NDS4gsubFf3m2qQoTMWLk552bQ","https://drive.google.com/uc?id=1p9wJIqRz3W50e2f_A0D8ftla8hoXz4T5"]
 images = [[path.as_posix()] for path in sorted(pathlib.Path('images').rglob('*.j*g'))]
 
