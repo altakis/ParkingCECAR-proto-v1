@@ -12,6 +12,8 @@ transformers = "*"
 validators = "*"
 timm = "*"
 gradio = "*"
+sqlalchemy = "*"
+pydantic = "*"
 
 [dev-packages]
 

@@ -1,3 +1,5 @@
+import time
+import asyncio
 import io
 import matplotlib.pyplot as plt
 import requests, validators
@@ -9,6 +11,8 @@ from transformers import (
     DetrForObjectDetection,
 )
 from FileManagerUtil import FileManagerUtil
+import db_operator
+import sql_app.schemas as schemas
 
 # colors for visualization
 COLORS = [
@@ -79,8 +83,9 @@ class license_detector:
             try:
                 crop_img = img.crop(*boxes)
             except:
-                random_img = b"\xf8\xff\xb0\xbc\xd8]\xba\xdf0\xbd\xdeE\xfb\xff\xd1\xf1\xff\xbf\xb4\xd9p\xad\xd9F\xae\xd7U\xf2\xff\xd6\xdf\xff\xdc\xde\xff\xd2m\xa8L\xe0\xff\xc5\xe0\xff\xe1F\x9a\\I\x9e]E\x9bTD\x9aSK\x9fa1\xadO,\xa7L3\xaeT/\xa9R.\xa8Q"
-                crop_img = Image.frombytes("RGB", (5, 5), random_img)
+                crop_img = img
+        else:
+            crop_img = img
 
         if id2label is not None:
             labels = [id2label[x] for x in labels]
@@ -129,10 +134,13 @@ class license_detector:
 
             return image
 
-    def detect_objects(
+    async def detect_objects(
         self, model_name, url_input, image_input, webcam_input, threshold
     ):
         model = self.verifyModel(model_name)
+        
+        # Time process
+        start_time = time.time()            
 
         # Extract model and feature extractor
         feature_extractor = AutoFeatureExtractor.from_pretrained(model_name)
@@ -161,6 +169,16 @@ class license_detector:
 
         # save results
         self.save_img_util.initialize_folders()
-        self.save_img_util.save_img_results(viz_img, crop_img)
+        img_ori_name, img_crop_name = self.save_img_util.save_img_results(viz_img, crop_img)
+        
+        process_time = time.time() - start_time
+        data = schemas.DetectionBase(
+            original_image_name = img_ori_name,
+            crop_image_name = img_crop_name,
+            license_plate_data = "",
+            wall_time = process_time
+        )
+        result = await db_operator.create_detection(detection_request=data)
+        print(result)
 
         return viz_img, crop_img

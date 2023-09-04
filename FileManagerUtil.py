@@ -20,7 +20,8 @@ class FileManagerUtil:
     def save_img_results(self, img_visualization: Image.Image, img_crop: Image.Image):
         now = datetime.now()
         dt_string = now.strftime("%d_%m_%Y__%H_%M_%S")
-        img_visualization.save(
-                os.path.join(self._img_folder, f"{dt_string}_ori.png"), "png"
-            )
-        img_crop.save(os.path.join(self._crop_folder, f"{dt_string}_crop.png"), "png")        
+        img_ori_name = f"{dt_string}_ori.png"
+        img_crop_name = f"{dt_string}_crop.png"
+        img_visualization.save(os.path.join(self._img_folder, img_ori_name), "png")
+        img_crop.save(os.path.join(self._crop_folder, img_crop_name), "png")
+        return img_ori_name, img_crop_name
