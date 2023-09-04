@@ -14,6 +14,11 @@ from FileManagerUtil import FileManagerUtil
 import db_operator
 import sql_app.schemas as schemas
 
+# Initialize the OCR reader
+import easyocr
+
+reader = easyocr.Reader(["en"], gpu=False)
+
 # colors for visualization
 COLORS = [
     [0.000, 0.447, 0.741],
@@ -79,12 +84,16 @@ class license_detector:
         scores = output_dict["scores"][keep].tolist()
         labels = output_dict["labels"][keep].tolist()
 
+        # Crops located license img for later ocr processing
+        # crop_error values: 0 = None, 1 = cropping error, 2 = not found license
+        crop_error = 0
         if len(boxes) > 0:
             try:
                 crop_img = img.crop(*boxes)
             except:
-                crop_img = img
+                crop_error = 1
         else:
+            crop_error = 2
             crop_img = img
 
         if id2label is not None:
@@ -117,16 +126,22 @@ class license_detector:
                 )
         plt.axis("off")
 
-        return self.fig2img(plt.gcf()), crop_img
+        license_located_img = self.fig2img(plt.gcf())
+        if crop_error > 0:
+            return license_located_img, license_located_img, crop_error
+        return license_located_img, crop_img, crop_error
 
-    """ def reduce_visual_to_license(self, img, output_dict, threshold=0.5, id2label=None):
-        keep = output_dict["scores"] > threshold
-        boxes = output_dict["boxes"][keep].tolist()
-        scores = output_dict["scores"][keep].tolist()
-        labels = output_dict["labels"][keep].tolist()
+    def read_license_plate(self, license_plate_crop: Image.Image):
+        detections = reader.readtext(license_plate_crop)
 
-        crop_img = img.crop(*boxes)
-        return crop_img """
+        for detection in detections:
+            bbox, text, score = detection
+
+            text = text.upper().replace(" ", "")
+
+            return text, score
+
+        return None, None
 
     def get_original_image(self, url_input):
         if validators.url(url_input):
@@ -138,9 +153,9 @@ class license_detector:
         self, model_name, url_input, image_input, webcam_input, threshold
     ):
         model = self.verifyModel(model_name)
-        
+
         # Time process
-        start_time = time.time()            
+        start_time = time.time()
 
         # Extract model and feature extractor
         feature_extractor = AutoFeatureExtractor.from_pretrained(model_name)
@@ -163,20 +178,27 @@ class license_detector:
         processed_outputs = self.make_prediction(image, feature_extractor, model)
 
         # Visualize prediction
-        viz_img, crop_img = self.visualize_prediction(
+        viz_img, crop_img, crop_error = self.visualize_prediction(
             image, processed_outputs, threshold, model.config.id2label
         )
 
-        # save results
+        # save img results
         self.save_img_util.initialize_folders()
-        img_ori_name, img_crop_name = self.save_img_util.save_img_results(viz_img, crop_img)
-        
+        img_ori_name, img_crop_name = self.save_img_util.save_img_results(
+            viz_img, crop_img
+        )
+
+        if crop_error == 0:
+            license_text, license_text_score = self.read_license_plate(img_crop_name)
+        else:
+            license_text, license_text_score = "ERROR", 0
+        # Time out and save to db
         process_time = time.time() - start_time
         data = schemas.DetectionBase(
-            original_image_name = img_ori_name,
-            crop_image_name = img_crop_name,
-            license_plate_data = "",
-            wall_time = process_time
+            original_image_name=img_ori_name,
+            crop_image_name=img_crop_name,
+            license_plate_data="f{license_text}:{license_text_score}",
+            wall_time=process_time,
         )
         result = await db_operator.create_detection(detection_request=data)
         print(result)
