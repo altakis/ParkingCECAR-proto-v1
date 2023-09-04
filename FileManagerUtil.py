@@ -21,6 +21,6 @@ class FileManagerUtil:
         now = datetime.now()
         dt_string = now.strftime("%d_%m_%Y__%H_%M_%S")
         img_visualization.save(
-                os.path.join(self._img_folder, f"{dt_string}.png"), "png"
+                os.path.join(self._img_folder, f"{dt_string}_ori.png"), "png"
             )
-        img_crop.save(os.path.join(self._crop_folder, f"{dt_string}.png"), "png")        
+        img_crop.save(os.path.join(self._crop_folder, f"{dt_string}_crop.png"), "png")        
