@@ -16,6 +16,8 @@ import sql_app.schemas as schemas
 
 # Initialize the OCR reader
 import easyocr
+import cv2
+from numpy import asarray
 
 reader = easyocr.Reader(["en"], gpu=False)
 
@@ -132,12 +134,20 @@ class license_detector:
         return license_located_img, crop_img, crop_error
 
     def read_license_plate(self, license_plate_crop: Image.Image):
-        detections = reader.readtext(license_plate_crop)
+        # format PIL.Image input into grayscale
+        license_plate_crop_gray = cv2.cvtColor(
+            asarray(license_plate_crop), cv2.COLOR_BGR2GRAY
+        )
+        _, license_plate_crop_thresh = cv2.threshold(
+            license_plate_crop_gray, 64, 255, cv2.THRESH_BINARY_INV
+        )
+
+        detections = reader.readtext(license_plate_crop_gray)
 
         for detection in detections:
             bbox, text, score = detection
 
-            text = text.upper().replace(" ", "")
+            text = text.upper().strip()
 
             return text, score
 
@@ -173,6 +183,9 @@ class license_detector:
 
         elif webcam_input:
             image = webcam_input
+            # Currently using a videoconference webcam which is why this step
+            # 'flipping' on the vertical axis is needed
+            image = image.transpose(Image.FLIP_LEFT_RIGHT)
 
         # Make prediction
         processed_outputs = self.make_prediction(image, feature_extractor, model)
@@ -190,7 +203,7 @@ class license_detector:
 
         # OCR license plate
         if crop_error == 0:
-            license_text, license_text_score = self.read_license_plate(img_crop_name)
+            license_text, license_text_score = self.read_license_plate(crop_img)
         else:
             license_text, license_text_score = "ERROR", 0
 
