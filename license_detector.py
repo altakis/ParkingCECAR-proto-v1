@@ -188,16 +188,18 @@ class license_detector:
             viz_img, crop_img
         )
 
+        # OCR license plate
         if crop_error == 0:
             license_text, license_text_score = self.read_license_plate(img_crop_name)
         else:
             license_text, license_text_score = "ERROR", 0
+
         # Time out and save to db
         process_time = time.time() - start_time
         data = schemas.DetectionBase(
             original_image_name=img_ori_name,
             crop_image_name=img_crop_name,
-            license_plate_data="f{license_text}:{license_text_score}",
+            license_plate_data=f"{license_text}:{license_text_score}",
             wall_time=process_time,
         )
         result = await db_operator.create_detection(detection_request=data)
