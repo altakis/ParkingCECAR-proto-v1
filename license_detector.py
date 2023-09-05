@@ -183,9 +183,11 @@ class license_detector:
 
         elif webcam_input:
             image = webcam_input
-            # Currently using a videoconference webcam which is why this step
-            # 'flipping' on the vertical axis is needed
-            image = image.transpose(Image.FLIP_LEFT_RIGHT)
+            # 'flipping' the vertical axis of the input may be needed
+            # depending on configuration of the webcam and emulator
+            # see Gradio (https://www.gradio.app/docs/image)
+            # specially regarding mirror_webcam attribute
+            # image = image.transpose(Image.FLIP_LEFT_RIGHT)
 
         # Make prediction
         processed_outputs = self.make_prediction(image, feature_extractor, model)
@@ -202,10 +204,12 @@ class license_detector:
         )
 
         # OCR license plate
-        if crop_error == 0:
+        # TODO: OCR is too slow and frankly useless as the camera quality simply doesn't allow a good enough capture
+        license_text, license_text_score = '', ''
+        """ if crop_error == 0:
             license_text, license_text_score = self.read_license_plate(crop_img)
         else:
-            license_text, license_text_score = "ERROR", 0
+            license_text, license_text_score = "ERROR", 0 """
 
         # Time out and save to db
         process_time = time.time() - start_time

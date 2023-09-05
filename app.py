@@ -38,9 +38,14 @@ with demo:
     with gr.Tabs():
         with gr.TabItem("WebCam"):
             with gr.Row():
-                web_input = gr.Image(
-                    source="webcam", type="pil", shape=(750, 750), streaming=True
-                )
+                with gr.Column():
+                    web_input = gr.Image(
+                        source="webcam",
+                        type="pil",
+                        shape=(750, 750),
+                        streaming=True,
+                        mirror_webcam=False,
+                    )
                 img_output_from_webcam = gr.Image(shape=(750, 750))
                 with gr.Column():
                     img_crop_from_webcam = gr.Image(shape=(500, 500))
@@ -94,7 +99,7 @@ with demo:
                         label="license_text",
                         info="license character data",
                         lines=2,
-                    )                
+                    )
 
             with gr.Row():
                 example_images = gr.Examples(
