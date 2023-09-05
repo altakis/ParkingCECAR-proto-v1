@@ -162,10 +162,10 @@ class license_detector:
     async def detect_objects(
         self, model_name, url_input, image_input, webcam_input, threshold
     ):
-        model = self.verifyModel(model_name)
-
         # Time process
-        start_time = time.time()
+        start_time = time.perf_counter()
+
+        model = self.verifyModel(model_name)
 
         # Extract model and feature extractor
         feature_extractor = AutoFeatureExtractor.from_pretrained(model_name)
@@ -212,7 +212,7 @@ class license_detector:
             license_text, license_text_score = "ERROR", 0 """
 
         # Time out and save to db
-        process_time = time.time() - start_time
+        process_time = time.perf_counter() - start_time
         data = schemas.DetectionBase(
             original_image_name=img_ori_name,
             crop_image_name=img_crop_name,
