@@ -1,6 +1,6 @@
 # Parking CECAR
 Prototipo de reconocimiento de placas basado en el proyecto:
-[Hugginface spaces config reference](https://huggingface.co/nickmuchi/yolos-small-finetuned-license-plate-detection)
+[Hugginface: nickmuchi/yolos-small-finetuned-license-plate-detection](https://huggingface.co/nickmuchi/yolos-small-finetuned-license-plate-detection)
 
 Se planea extender el sistema tal que sea capaz de procesar video streaming en tiempo real.
 
