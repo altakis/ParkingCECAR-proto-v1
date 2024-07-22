@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "parking-cecar-proto-v1"
+version = "0.1.0"
+description = ""
+authors = ["altakis <42413498+altakis@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests-file = "^1.5.1"
+validators = "^0.22.0"
+transformers = "^4.32.1"
+SQLAlchemy = "^2.0.20"
+torch = "^2.0.1"
+gradio = "^3.42.0"
+opencv-python = "^4.8.0.76"
+pydantic = "^2.3.0"
+easyocr = "^1.7.1"
+timm = "^0.9.7"
+beautifulsoup4 = "^4.12.2"
+bs4 = "^0.0.1"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
